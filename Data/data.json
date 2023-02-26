@@ -1,0 +1,34 @@
+{
+  "Building": {
+      "VillageHall": [
+        {
+          "timeCost": 10,
+          "resourceCost": [1000,1000,1000],
+          "space": [10,10],
+          "requirements": {
+              "worker": 1
+          }
+        },
+        {
+          "timeCost": 20,
+          "resourceCost": [3000,3000,3000],
+          "space": [10,10],
+          "requirements": {
+            "worker": 10
+          }
+        },
+        {
+          "timeCost": 30,
+          "resourceCost": [9000,9000,9000],
+          "space": [10,10],
+          "requirements": {
+            "worker": 20
+          }
+        }
+      ],
+    ""
+  },
+  "Inhabitant": {
+    "Worker": []
+  }
+}
