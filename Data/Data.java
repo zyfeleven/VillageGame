@@ -42,7 +42,7 @@ public class Data {
 
 
     //constructor: read data.json and store all constants in class members
-    Data(){
+    public Data(){
 
     }
 

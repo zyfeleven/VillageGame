@@ -1,12 +1,24 @@
 package Inhabitant;
 
-public class Soldier extends Army{
+public class Soldier implements Inhabitant{
+
+    private int production;
+    private int dmg;
 
     //constructor
-    Soldier(){}
+    public Soldier(){
+        this.dmg = 10 + (int) Math.random()*5;
+        this.production = 1 + (int) Math.random()*3;
+    }
 
-    @Override
-    public String typeOf(){
+    public int getProduction(){
+        return this.production;
+    }
+
+    public int getDmg(){
+        return this.dmg;
+    }
+    public String getName(){
         return "Soldier";
     }
 }

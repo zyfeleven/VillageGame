@@ -11,6 +11,12 @@ public class Population {
 
     //constructor
     Population(){
+        this.workers = 0;
+        this.miners= 0;
+        this.archers = 0;
+        this.knights = 0;
+        this.catapults = 0;
+        this.soldiers = 0;
         //initialize or read from file
     }
 

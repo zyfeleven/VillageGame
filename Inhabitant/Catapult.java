@@ -1,13 +1,27 @@
 package Inhabitant;
 
-public class Catapult extends Army{
+public class Catapult implements Inhabitant{
 
     //constructor
-    Catapult(){}
+    private int production;
+    private int dmg;
+    //constructor
+    public Catapult(){
+        this.production = 2 + (int) Math.random()*5;
+        this.dmg = 5;
+    }
 
-    @Override
-    public String typeOf(){
+    //implementation
+    public String getName(){
         return "Catapult";
+    }
+
+    public int getProduction(){
+        return this.production;
+    }
+
+    public int getDmg(){
+        return this.dmg;
     }
 
 }

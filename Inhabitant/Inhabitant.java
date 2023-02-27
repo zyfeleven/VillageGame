@@ -1,5 +1,9 @@
 package Inhabitant;
 
 public interface Inhabitant {
-    public String typeOf();
+    public String getName();
+
+    public int getProduction();
+
+    public int getDmg();
 }

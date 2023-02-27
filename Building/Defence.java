@@ -3,30 +3,14 @@ package Building;
 import Inhabitant.Inhabitant;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
-public class Defence implements Building{
-    protected int level;
-    protected int[] position;
-    protected ArrayList<Inhabitant> armies;
-    protected int curArmies;
-    protected int maxArmies;
-    protected int hitpoint;
+public interface Defence extends Building{
 
-    Defence(){}
 
-    public void upgrade() {
-        this.level++;
-    }
+    void addArmy(Inhabitant army);
 
-    public int getLevel(){
-        return this.level;
-    }
+    int getDmg();
 
-    public void addArmy(Inhabitant army){
 
-    }
-
-    public String getName(){
-        return "Defence";
-    }
 }
