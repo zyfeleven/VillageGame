@@ -1,28 +1,9 @@
 package Building;
 
+import Inhabitant.Inhabitant;
 import Inhabitant.Miner;
 
-public class Mine implements Building{
-    private int curWorker;
-    private int maxWorker;
-    private int level;
-    private int[] position;
-    private int hitpoint;
+public interface Mine extends Building{
+    void addMiner(Inhabitant miner);
 
-    Mine(){}
-
-    public void upgrade() {
-
-    }
-
-    public int getLevel(){
-        return this.level;
-    }
-
-    public void addMiner(Miner miner) {
-    }
-
-    public String getName(){
-        return "Mine";
-    }
 }

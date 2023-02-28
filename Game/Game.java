@@ -1,5 +1,6 @@
 package Game;
 
+import Data.Data;
 import Village.Village;
 import Village.Resource;
 
@@ -11,10 +12,11 @@ public class Game {
     //timer
     Timer timer;
 
+    private final Data data = new Data();
+
     //constructor
     Game(){
-        //read user data from json file
-        //load map
+        user = new Village();
     }
 
     //randomly generate a village to attack

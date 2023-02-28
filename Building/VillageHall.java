@@ -5,7 +5,7 @@ public class VillageHall implements Building {
     private int[] position;
     private int hitpoint;
     //constructor
-    VillageHall(){
+    public VillageHall(){
 
     }
 

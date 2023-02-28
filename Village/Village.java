@@ -1,10 +1,10 @@
 package Village;
-import Building.Building;
+import Building.*;
 import java.util.HashMap;
 
 public class Village {
     //building map, when build a new building, give each building a unique bid and position that store in hashmap
-    private HashMap<Building, Integer[]> buildings;
+    private HashMap<Building, int[]> buildings;
     private int maxGold;
     private int maxWood;
     private int maxIron;
@@ -16,8 +16,17 @@ public class Village {
     //population of the village(all inhabitants)
     private Population population;
 
-    Village(){
-        //initialize the village or load data from .json file
+    public Village(){
+        this.buildings = new HashMap<>();
+        this.buildings.put(new VillageHall(),new int[]{0,0,0});
+        this.maxGold = 100;
+        this.maxIron = 100;
+        this.maxWood = 100;
+        this.maxPopulation = 10;
+        this.resource = new Resource(10,10,10);
+        this.villageMap = new Vmap();
+        this.population = new Population();
+        this.villageMap = new Vmap();
     }
 
     //add resources
