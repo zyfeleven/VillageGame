@@ -2,20 +2,20 @@ package Inhabitant;
 
 public class Soldier implements Inhabitant{
 
-    private int production;
-    private int dmg;
+    private double production;
+    private double dmg;
 
     //constructor
     public Soldier(){
-        this.dmg = 10 + (int) Math.random()*5;
-        this.production = 1 + (int) Math.random()*3;
+        this.dmg = 10.0 +  Math.random()*5;
+        this.production = 1.0 +  Math.random()*3;
     }
 
-    public int getProduction(){
+    public double getProduction(){
         return this.production;
     }
 
-    public int getDmg(){
+    public double getDmg(){
         return this.dmg;
     }
     public String getName(){

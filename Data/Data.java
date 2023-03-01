@@ -11,9 +11,9 @@ public class Data {
     //Resource[] : [level1 cost, level2 cost...]
     public final int[] villageHallTimeCost = new int[]{10,60,120};
     public final Resource[] villageHallCost = new Resource[] {new Resource(100,100,100), new Resource(500,500,500), new Resource(3000,3000,3000)};
-    private final Requirement VReq1 = new Requirement(0,new int[]{0,0,0},new int[]{0,0,0},new int[]{0,0,0},new int[]{0,0,0},new int[]{0,0,0},new int[]{0,0,0});
-    private final Requirement VReq2 = new Requirement(1,new int[]{3,0,0},new int[]{3,0,0},new int[]{3,0,0},new int[]{3,0,0},new int[]{1,0,0},new int[]{1,0,0});
-    private final Requirement VReq3 = new Requirement(2,new int[]{0,3,0},new int[]{0,3,0},new int[]{0,3,0},new int[]{0,3,0},new int[]{0,1,0},new int[]{0,1,0});
+    public final Requirement VReq1 = new Requirement(0,new int[]{0,0,0},new int[]{0,0,0},new int[]{0,0,0},new int[]{0,0,0},new int[]{0,0,0},new int[]{0,0,0});
+    public final Requirement VReq2 = new Requirement(1,new int[]{3,0,0},new int[]{3,0,0},new int[]{3,0,0},new int[]{3,0,0},new int[]{1,0,0},new int[]{1,0,0});
+    public final Requirement VReq3 = new Requirement(2,new int[]{0,3,0},new int[]{0,3,0},new int[]{0,3,0},new int[]{0,3,0},new int[]{0,1,0},new int[]{0,1,0});
     public final Requirement[] villageHallReq = new Requirement[] {VReq1,VReq2,VReq3};
 
     public final int[] farmTimeCost = new int[]{5,15,45};
@@ -46,5 +46,38 @@ public class Data {
 
     }
 
+    public Requirement getVReq(int level){
+        if(level == 1){
+            return this.VReq1;
+        }
+        else if(level == 2){
+            return this.VReq2;
+        }
+        else return this.VReq3;
+    }
+
+    public Resource getCost(String name, int level){
+        if(name.equals("VillageHall")){
+            return this.villageHallCost[level-1];
+        }
+        else if(name.equals("Farm")){
+            return this.farmCost[level-1];
+        }
+        else if(name.equals("ArcherTower")){
+            return this.archerTowerCost[level-1];
+        }
+        else if(name.equals("Cannons")){
+            return this.cannonCost[level-1];
+        }
+        else if(name.equals("GoldMine")){
+            return this.goldMineCost[level-1];
+        }
+        else if(name.equals("IronMine")){
+            return this.ironMineCost[level-1];
+        }
+        else{
+            return this.lumberHillCost[level-1];
+        }
+    }
 
 }

@@ -2,20 +2,20 @@ package Inhabitant;
 
 public class Worker implements Inhabitant{
     //constructor
-    private int production;
-    private int dmg;
+    private double production;
+    private double dmg;
 
     //constructor
     public Worker(){
-        this.dmg = 5;
-        this.production = 1 + (int) Math.random()*3;
+        this.dmg = 5.0;
+        this.production = 1.0 + Math.random()*3;
     }
 
-    public int getProduction(){
+    public double getProduction(){
         return this.production;
     }
 
-    public int getDmg(){
+    public double getDmg(){
         return this.dmg;
     }
     public String getName(){

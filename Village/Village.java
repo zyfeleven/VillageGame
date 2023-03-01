@@ -1,46 +1,125 @@
 package Village;
 import Building.*;
+import Data.Data;
+import Data.Requirement;
+
 import java.util.HashMap;
 
 public class Village {
     //building map, when build a new building, give each building a unique bid and position that store in hashmap
-    private HashMap<Building, int[]> buildings;
-    private int maxGold;
-    private int maxWood;
-    private int maxIron;
+    private HashMap<int[], Building> buildings;
+    private double maxGold;
+    private double maxWood;
+    private double maxIron;
     //resource of the village(gold/wood/iron)
     private Resource resource;
     //the map of village
     private Vmap villageMap;
-    private int maxPopulation;
+    private double maxPopulation;
     //population of the village(all inhabitants)
     private Population population;
+    private double ironProduction;
+    private double woodProduction;
+    private double goldProduction;
+    private final Data data = new Data();
+    private VillageRecord record;
 
     public Village(){
         this.buildings = new HashMap<>();
-        this.buildings.put(new VillageHall(),new int[]{0,0,0});
-        this.maxGold = 100;
-        this.maxIron = 100;
-        this.maxWood = 100;
-        this.maxPopulation = 10;
+        this.buildings.put(new int[]{0,0,0}, new VillageHall());
+        this.maxGold = 10000.0;
+        this.maxIron = 10000.0;
+        this.maxWood = 10000.0;
+        this.maxPopulation = 10.0;
+        this.ironProduction = 0.0;
+        this.woodProduction = 0.0;
+        this.goldProduction = 0.0;
         this.resource = new Resource(10,10,10);
-        this.villageMap = new Vmap();
+        this.record = new VillageRecord();
         this.population = new Population();
         this.villageMap = new Vmap();
     }
 
     //add resources
-    public void addResource(int gold,int wood,int iron){
+    public void addResource(double gold,double wood,double iron){
         this.resource.changeResource(gold,wood,iron);
     }
 
     //reduce resources
-    public void subResource(int gold,int wood,int iron){
+    public void subResource(double gold,double wood,double iron){
         this.resource.changeResource(-gold,-wood,-iron);
     }
 
     //check if this village can build/upgrade a specific building
-    public boolean addBuilding(String buildingName, int level, int[] position){
-        return true;
+    public boolean addBuilding(Building building, int[] position){
+        if(this.villageMap.addBuilding(building,position)){
+            this.record.add(building.getName());
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean upgradeBuilding(int[] position){
+        //local class for judging whether a building could be upgraded
+
+        String name = this.buildings.get(position).getName();
+        int level = this.buildings.get(position).getLevel();
+
+        class ReqComparator {
+            public boolean canUpgrade(){
+                return false;
+            }
+        }
+        //anonymous class
+        ReqComparator comparator = new ReqComparator(){
+            Requirement req = data.getVReq(level);
+            VillageRecord record = Village.this.record;
+            String[] buildings = new String[]{"VillageHall", "Farm", "IronMine", "GoldMine", "LumberHill", "Cannons", "ArcherTower"};
+
+            public boolean canUpgrade(){
+                if(req.getVillageHall()>record.getVillageHall()){
+                    return false;
+                }
+                for(String name: buildings){
+                    for(int i = 2;i>0;i--){
+                        if(record.getRecord(name)[i]<req.getRecord(name)[i]){
+                            return false;
+                        }
+                        else if(record.getRecord(name)[i]>req.getRecord(name)[i]){
+                            break;
+                        }
+                    }
+                }
+                return true;
+            }
+        };
+        if(level == 3){
+            System.err.println("This building has reached max level!");
+            return false;
+        }
+        if(!name.equals("VillageHall")){
+            if(level<this.record.getVillageHall() && this.resource.compareTo(data.getCost(name,level))){
+                this.record.upgrade(name,level);
+                this.buildings.get(position).upgrade();
+                return true;
+            }
+        }
+        else{
+            if(comparator.canUpgrade() && this.resource.compareTo(data.getCost(name,level))){
+                this.record.upgrade(name,level);
+                this.buildings.get(position).upgrade();
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public int getScore(){
+        return this.record.getScore();
+    }
+
+    public double[] getProduction(){
+        return new double[]{this.goldProduction, this.woodProduction, this.ironProduction};
     }
 }

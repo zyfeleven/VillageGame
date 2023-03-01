@@ -1,12 +1,12 @@
 package Inhabitant;
 
 public class Miner implements Inhabitant{
-    private int production;
-    private int dmg;
+    private double production;
+    private double dmg;
     //constructor
     public Miner(){
-        this.production = 2 + (int) Math.random()*5;
-        this.dmg = 5;
+        this.production = 2.0 + Math.random()*5;
+        this.dmg = 5.0;
     }
 
     //implementation
@@ -14,11 +14,11 @@ public class Miner implements Inhabitant{
         return "Miner";
     }
 
-    public int getProduction(){
+    public double getProduction(){
         return this.production;
     }
 
-    public int getDmg(){
+    public double getDmg(){
         return this.dmg;
     }
 

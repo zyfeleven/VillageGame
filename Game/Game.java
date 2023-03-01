@@ -5,18 +5,43 @@ import Village.Village;
 import Village.Resource;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class Game {
     //current user
     private Village user;
-    //timer
-    Timer timer;
+    private Timer timer;
+    private TimerTask timerTask;
+    private int time;
+
 
     private final Data data = new Data();
 
     //constructor
     Game(){
         user = new Village();
+        timer = new Timer();
+        time = 0;
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                time++;
+                System.out.println(time);
+                user.addResource(user.getProduction()[0],user.getProduction()[1],user.getProduction()[2]);
+            }
+        };
+        this.test();
+        timer.scheduleAtFixedRate(timerTask,0,1000);
+    }
+
+    public void test(){
+        TimerTask test = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("test after 10s");
+            }
+        };
+        this.timer.schedule(test, 5000);
     }
 
     //randomly generate a village to attack
@@ -55,10 +80,10 @@ public class Game {
     public void addBuilding(String buildingName){}
 
     //update user's resource(gold/wood/iron) after construct new buildings/gain loot/natural production
-    public void updateResource(){};
+    public void updateResource(){}
 
     //update user's production speed after related construction completed
-    public void updateProductionSpeed(){};
+    public void updateProductionSpeed(){}
 
     //calculate current user's score
     public int retScore(){

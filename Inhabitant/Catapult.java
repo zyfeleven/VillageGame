@@ -3,12 +3,12 @@ package Inhabitant;
 public class Catapult implements Inhabitant{
 
     //constructor
-    private int production;
-    private int dmg;
+    private double production;
+    private double dmg;
     //constructor
     public Catapult(){
-        this.production = 2 + (int) Math.random()*5;
-        this.dmg = 5;
+        this.dmg = 10.0 +  Math.random()*5;
+        this.production = 1.0 +  Math.random()*3;
     }
 
     //implementation
@@ -16,11 +16,11 @@ public class Catapult implements Inhabitant{
         return "Catapult";
     }
 
-    public int getProduction(){
+    public double getProduction(){
         return this.production;
     }
 
-    public int getDmg(){
+    public double getDmg(){
         return this.dmg;
     }
 
