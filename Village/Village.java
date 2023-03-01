@@ -4,6 +4,8 @@ import Data.Data;
 import Data.Requirement;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Village {
     //building map, when build a new building, give each building a unique bid and position that store in hashmap
@@ -15,7 +17,7 @@ public class Village {
     private Resource resource;
     //the map of village
     private Vmap villageMap;
-    private double maxPopulation;
+    private int maxPopulation;
     //population of the village(all inhabitants)
     private Population population;
     private double ironProduction;
@@ -30,7 +32,7 @@ public class Village {
         this.maxGold = 10000.0;
         this.maxIron = 10000.0;
         this.maxWood = 10000.0;
-        this.maxPopulation = 10.0;
+        this.maxPopulation = 10;
         this.ironProduction = 0.0;
         this.woodProduction = 0.0;
         this.goldProduction = 0.0;
@@ -50,17 +52,41 @@ public class Village {
         this.resource.changeResource(-gold,-wood,-iron);
     }
 
-    //check if this village can build/upgrade a specific building
+    //check if this village can build a specific building
     public boolean addBuilding(Building building, int[] position){
         if(this.villageMap.addBuilding(building,position)){
-            this.record.add(building.getName());
-            return true;
+            if(this.resource.compareTo(this.data.getBuildingCost(building.getName(),1))){
+                this.record.add(building.getName());
+                this.buildings.put(position, building);
+                return true;
+            }
+            else{
+                System.err.println("Resource is not enough!");
+                return false;
+            }
         }
         else return false;
     }
 
-    public boolean upgradeBuilding(int[] position){
-        //local class for judging whether a building could be upgraded
+    public boolean addInhabitant(String name, Timer timer){
+        if(this.population.getPopulationSize()==this.maxPopulation){
+            return false;
+        }
+        if(this.resource.compareTo(this.data.getInhabitantCost(name))){
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    population.addPopulation(name);
+                }
+            };
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean upgradeBuilding(int[] position , Timer timer){
 
         String name = this.buildings.get(position).getName();
         int level = this.buildings.get(position).getLevel();
@@ -98,14 +124,22 @@ public class Village {
             return false;
         }
         if(!name.equals("VillageHall")){
-            if(level<this.record.getVillageHall() && this.resource.compareTo(data.getCost(name,level))){
-                this.record.upgrade(name,level);
-                this.buildings.get(position).upgrade();
+            if(level<this.record.getVillageHall() && this.resource.compareTo(data.getBuildingCost(name,level))){
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        record.upgrade(name,level);
+                        buildings.get(position).upgrade();
+
+                        //todo:
+                    }
+                }
+
                 return true;
             }
         }
         else{
-            if(comparator.canUpgrade() && this.resource.compareTo(data.getCost(name,level))){
+            if(comparator.canUpgrade() && this.resource.compareTo(data.getBuildingCost(name,level))){
                 this.record.upgrade(name,level);
                 this.buildings.get(position).upgrade();
                 return true;

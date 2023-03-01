@@ -3,7 +3,11 @@ package Building;
 import Inhabitant.Inhabitant;
 import Inhabitant.Miner;
 
-public interface Mine extends Building{
-    void addMiner(Inhabitant miner);
+import java.util.HashSet;
 
+public interface Mine extends Building{
+
+    void addWorker(Inhabitant miner);
+
+    HashSet<?> getWorkers();
 }

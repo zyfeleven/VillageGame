@@ -8,9 +8,9 @@ import java.util.HashSet;
 public interface Defence extends Building{
 
 
-    void addArmy(Inhabitant army);
+    void addWorker(Inhabitant army);
 
     int getDmg();
 
-
+    HashSet<?> getWorkers();
 }

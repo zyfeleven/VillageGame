@@ -34,7 +34,7 @@ public class LumberHill implements Mine{
         return this.level;
     }
 
-    public void addMiner(Inhabitant miner) {
+    public void addWorker(Inhabitant miner) {
         this.miners.add(miner);
         this.production+=miner.getProduction();
         this.curWorker++;
@@ -48,4 +48,7 @@ public class LumberHill implements Mine{
         return "LumberHill";
     }
 
+    public HashSet<Inhabitant> getWorkers(){
+        return this.miners;
+    }
 }

@@ -11,7 +11,7 @@ public class Cannons implements Defence{
     private int curArmies;
     private int maxArmies;
     private int hitpoint;
-    private HashSet<Inhabitant> armires;
+    private HashSet<Inhabitant> armies;
     private int dmg;
 
     public Cannons(){
@@ -20,7 +20,7 @@ public class Cannons implements Defence{
         this.level = 1;
         this.hitpoint = 150;
         this.dmg = 20;
-        this.armires = new HashSet<>();
+        this.armies = new HashSet<>();
     }
 
     public void upgrade() {
@@ -34,8 +34,8 @@ public class Cannons implements Defence{
         return this.level;
     }
 
-    public void addArmy(Inhabitant army){
-        this.armires.add(army);
+    public void addWorker(Inhabitant army){
+        this.armies.add(army);
         this.curArmies++;
         this.dmg+=army.getDmg();
     }
@@ -46,5 +46,9 @@ public class Cannons implements Defence{
 
     public String getName(){
         return "Cannons";
+    }
+
+    public HashSet<Inhabitant> getWorkers(){
+        return this.armies;
     }
 }

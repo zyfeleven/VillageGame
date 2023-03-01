@@ -47,4 +47,7 @@ public class Farm implements Building{
     public String getName(){
         return "Farm";
     }
+    public HashSet<Inhabitant> getWorkers(){
+        return this.workers;
+    }
 }

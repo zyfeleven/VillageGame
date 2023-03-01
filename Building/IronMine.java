@@ -35,7 +35,7 @@ public class IronMine implements Mine {
         return this.level;
     }
 
-    public void addMiner(Inhabitant miner) {
+    public void addWorker(Inhabitant miner) {
         this.miners.add(miner);
         this.production+=miner.getProduction();
         this.curWorker++;
@@ -45,5 +45,8 @@ public class IronMine implements Mine {
     }
     public String getName(){
         return "IronMine";
+    }
+    public HashSet<Inhabitant> getWorkers(){
+        return this.miners;
     }
 }

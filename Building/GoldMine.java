@@ -36,7 +36,7 @@ public class GoldMine implements Mine {
         return this.level;
     }
 
-    public void addMiner(Inhabitant miner) {
+    public void addWorker(Inhabitant miner) {
         this.miners.add(miner);
         this.production+=miner.getProduction();
         this.curWorker++;
@@ -46,5 +46,8 @@ public class GoldMine implements Mine {
     }
     public String getName(){
         return "GoldMine";
+    }
+    public HashSet<Inhabitant> getWorkers(){
+        return this.miners;
     }
 }

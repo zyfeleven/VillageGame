@@ -56,7 +56,7 @@ public class Data {
         else return this.VReq3;
     }
 
-    public Resource getCost(String name, int level){
+    public Resource getBuildingCost(String name, int level){
         if(name.equals("VillageHall")){
             return this.villageHallCost[level-1];
         }
@@ -77,6 +77,27 @@ public class Data {
         }
         else{
             return this.lumberHillCost[level-1];
+        }
+    }
+
+    public Resource getInhabitantCost(String name){
+        if(name.equals("Worker")){
+            return this.workerCost;
+        }
+        else if(name.equals("Miner")){
+            return this.minerCost;
+        }
+        else if(name.equals("Archer")){
+            return this.archerCost;
+        }
+        else if(name.equals("Knight")){
+            return this.knightCost;
+        }
+        else if(name.equals("Soldier")){
+            return this.soldierCost;
+        }
+        else{
+            return this.catapultCost;
         }
     }
 
