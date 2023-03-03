@@ -8,7 +8,7 @@ public class Vmap {
     private char[][] map;
 
     Vmap(){
-        this.map = new char[999][999];
+        this.map = new char[50][50];
     }
 
     //add a building in the map, if there is already one building in the area then return false, else build the building and return true
@@ -24,13 +24,14 @@ public class Vmap {
     }
 
     //move one building from a place to another place, return false if the operation is invalid
-    public boolean moveBuilding(Building building, int[] position){
-        if(this.map[position[0]][position[1]] != ' '){
+    public boolean moveBuilding(Building building,int[] curPosition, int[] targetPosition){
+        if(this.map[targetPosition[0]][targetPosition[1]] != ' '){
             System.err.println("Target position is not empty!");
             return false;
         }
         else{
-            this.map[position[0]][position[1]] = building.getName().charAt(0);
+            this.map[targetPosition[0]][targetPosition[1]] = building.getName().charAt(0);
+            this.map[curPosition[0]][curPosition[1]] = ' ';
             return true;
         }
     }

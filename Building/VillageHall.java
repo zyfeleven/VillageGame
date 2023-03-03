@@ -1,5 +1,7 @@
 package Building;
 
+import Inhabitant.Inhabitant;
+
 public class VillageHall implements Building {
     private int level;
     private int[] position;
@@ -21,4 +23,5 @@ public class VillageHall implements Building {
     public String getName(){
         return "Village";
     }
+
 }

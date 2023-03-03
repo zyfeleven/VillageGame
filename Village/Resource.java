@@ -13,10 +13,13 @@ public class Resource {
         this.iron = iron;
     }
 
-    public void changeResource(double gold, double wood, double iron){
+    public void addResource(double gold, double wood, double iron, double maxGold,double maxWood,double maxIron){
         this.gold += gold;
         this.wood += wood;
         this.iron += iron;
+        this.gold = this.gold>maxGold?maxGold:this.gold;
+        this.wood = this.wood>maxWood?maxWood:this.wood;
+        this.iron = this.iron>maxIron?maxIron:this.iron;
     }
 
     public double[] getResource(){
