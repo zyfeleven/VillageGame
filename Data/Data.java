@@ -101,4 +101,32 @@ public class Data {
         }
     }
 
+    public int getTimeCost(String name, int level){
+        if(level == 0){
+            if(name.equals("Worker")){
+                return this.workerTimeCost;
+            }
+            else if(name.equals("Miner")){
+                return this.minerTimeCost;
+            }
+            else {
+                return this.armyTimeCost;
+            }
+        }
+        else{
+            if(name.equals("VillageHall")){
+                return this.villageHallTimeCost[level-1];
+            }
+            else if(name.equals("Farm")){
+                return this.farmTimeCost[level-1];
+            }
+            else if(name.equals("ArcherTower")||name.equals("Cannons")){
+                return this.defenceTimeCost[level-1];
+            }
+            else {
+                return this.mineTimeCost[level-1];
+            }
+        }
+    }
+
 }

@@ -9,7 +9,7 @@ public class Farm implements Building{
     private int maxWorker;
     private int level;
     private int hitpoint;
-    private int production;
+    private double production;
     private HashSet<Inhabitant> workers;
     //constructor
     public Farm(){
@@ -17,7 +17,7 @@ public class Farm implements Building{
         this.maxWorker = 5;
         this.level = 1;
         this.hitpoint = 100;
-        this.production = 0;
+        this.production = 5;
         this.workers = new HashSet<>();
     }
 
@@ -37,11 +37,18 @@ public class Farm implements Building{
         this.production+=worker.getProduction();
         this.curWorker++;
     }
+
+    public void removeWorker(Inhabitant worker){
+        this.workers.remove(worker);
+        worker.work(new int[]{0,0});
+        this.production -= worker.getProduction();
+    }
+
     public int getCurWorker(){
         return this.curWorker;
     }
 
-    public int getProduction(){
+    public double getProduction(){
         return this.production;
     }
     public String getName(){

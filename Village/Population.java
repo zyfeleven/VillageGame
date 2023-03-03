@@ -13,7 +13,6 @@ public class Population {
     private ArrayList<Knight> knights;
     private ArrayList<Catapult> catapults;
     private ArrayList<Soldier> soldiers;
-    private ArrayList<Inhabitant> working;
     private ArrayList<Inhabitant> armies;
     //constructor
     Population(){
@@ -23,8 +22,31 @@ public class Population {
         this.archers = new ArrayList<>();
         this.knights = new ArrayList<>();
         this.soldiers = new ArrayList<>();
-        this.working = new ArrayList<>();
         this.armies = new ArrayList<>();
+    }
+
+    public Inhabitant getInhabitant(String name, int index){
+        if(name.equals("Worker")){
+            return this.workers.get(index);
+        }
+        else if(name.equals("Miner")){
+            return this.miners.get(index);
+        }
+        else if(name.equals("Catapult")){
+            return this.catapults.get(index);
+        }
+        else if(name.equals("Soldiers")){
+            return this.soldiers.get(index);
+        }
+        else if(name.equals("Knight")){
+            return this.knights.get(index);
+        }
+        else if(name.equals("Armies")){
+            return this.armies.get(index);
+        }
+        else{
+            return this.archers.get(index);
+        }
     }
 
     public ArrayList<?> getDetails(String name){
@@ -43,8 +65,8 @@ public class Population {
         else if(name.equals("Knight")){
             return this.knights;
         }
-        else if(name.equals("Working")){
-            return this.working;
+        else if(name.equals("Armies")){
+            return this.armies;
         }
         else{
             return this.archers;
@@ -60,8 +82,6 @@ public class Population {
         sum += this.knights.size();
         sum += this.archers.size();
         sum += this.soldiers.size();
-        sum += this.working.size();
-        sum+= this.armies.size();
         return sum;
     }
 
@@ -86,11 +106,70 @@ public class Population {
         }
     }
 
-    public void subPopulation(String name){
-
+    public void removePopulation(String name, int index){
+        if(name.equals("Worker")){
+            this.workers.remove(index);
+        }
+        else if(name.equals("Miner")){
+            this.miners.remove(index);
+        }
+        else if(name.equals("Catapult")){
+            this.catapults.remove(index);
+        }
+        else if(name.equals("Soldiers")){
+            this.soldiers.remove(index);
+        }
+        else if(name.equals("Knight")){
+            this.knights.remove(index);
+        }
+        else{
+            this.archers.remove(index);
+        }
     }
 
-    public void addArmies(Inhabitant inhabitant){
-        this.armies.add(inhabitant);
+    public void addArmies(String name, int index){
+        if(name.equals("Worker")){
+            this.armies.add(this.workers.get(index));
+        }
+        else if(name.equals("Miner")){
+            this.armies.add(this.miners.get(index));
+        }
+        else if(name.equals("Catapult")){
+            this.armies.add(this.catapults.get(index));
+        }
+        else if(name.equals("Soldiers")){
+            this.armies.add(this.soldiers.get(index));
+        }
+        else if(name.equals("Knight")){
+            this.armies.add(this.knights.get(index));
+        }
+        else{
+            this.armies.add(this.archers.get(index));
+        }
+    }
+
+    public void addWorking(String name, int index,int[] position){
+        if(name.equals("Worker")){
+            this.workers.get(index).work(position);
+        }
+        else if(name.equals("Miner")){
+            this.miners.get(index).work(position);
+        }
+        else if(name.equals("Catapult")){
+            this.catapults.get(index).work(position);
+        }
+        else if(name.equals("Soldiers")){
+            this.soldiers.get(index).work(position);
+        }
+        else if(name.equals("Knight")){
+            this.knights.get(index).work(position);
+        }
+        else{
+            this.archers.get(index).work(position);
+        }
+    }
+
+    public void removeArmies(int index){
+        this.armies.remove(index);
     }
 }

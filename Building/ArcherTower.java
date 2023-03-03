@@ -11,7 +11,7 @@ public class ArcherTower implements Defence{
     private int maxArmies;
     private int hitpoint;
     private HashSet<Inhabitant> armies;
-    private int dmg;
+    private double dmg;
 
     public ArcherTower(){
         this.curArmies = 0;
@@ -38,8 +38,13 @@ public class ArcherTower implements Defence{
         this.curArmies++;
         this.dmg+=army.getDmg();
     }
+    public void removeWorker(Inhabitant worker){
+        this.armies.remove(worker);
+        worker.work(new int[]{0,0});
+        this.dmg-=worker.getDmg();
+    }
 
-    public int getDmg(){
+    public double getDmg(){
         return this.dmg;
     }
 

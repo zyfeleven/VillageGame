@@ -9,5 +9,5 @@ public interface Mine extends Building{
 
     void addWorker(Inhabitant miner);
 
-    HashSet<?> getWorkers();
+    HashSet<Inhabitant> getWorkers();
 }

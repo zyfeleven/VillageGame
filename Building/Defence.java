@@ -10,7 +10,7 @@ public interface Defence extends Building{
 
     void addWorker(Inhabitant army);
 
-    int getDmg();
+    double getDmg();
 
     HashSet<?> getWorkers();
 }

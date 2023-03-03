@@ -21,7 +21,7 @@ public class GoldMine implements Mine {
         this.maxWorker = 5;
         this.level = 1;
         this.hitpoint = 100;
-        this.production = 0;
+        this.production = 5;
         this.miners = new HashSet<>();
     }
 
@@ -40,6 +40,11 @@ public class GoldMine implements Mine {
         this.miners.add(miner);
         this.production+=miner.getProduction();
         this.curWorker++;
+    }
+    public void removeWorker(Inhabitant worker){
+        this.miners.remove(worker);
+        worker.work(new int[]{0,0});
+        this.production -= worker.getProduction();
     }
     public int getCurWorker(){
         return this.curWorker;

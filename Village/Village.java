@@ -2,10 +2,9 @@ package Village;
 import Building.*;
 import Data.Data;
 import Data.Requirement;
+import Inhabitant.*;
 
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Village {
     //building map, when build a new building, give each building a unique bid and position that store in hashmap
@@ -23,6 +22,7 @@ public class Village {
     private double ironProduction;
     private double woodProduction;
     private double goldProduction;
+    private double foodProduction;
     private final Data data = new Data();
     private VillageRecord record;
 
@@ -33,10 +33,11 @@ public class Village {
         this.maxIron = 10000.0;
         this.maxWood = 10000.0;
         this.maxPopulation = 10;
-        this.ironProduction = 0.0;
-        this.woodProduction = 0.0;
-        this.goldProduction = 0.0;
-        this.resource = new Resource(10,10,10);
+        this.ironProduction = 5.0;
+        this.woodProduction = 5.0;
+        this.goldProduction = 5.0;
+        this.foodProduction = 0.0;
+        this.resource = new Resource(100,100,100);
         this.record = new VillageRecord();
         this.population = new Population();
         this.villageMap = new Vmap();
@@ -44,20 +45,34 @@ public class Village {
 
     //add resources
     public void addResource(double gold,double wood,double iron){
-        this.resource.changeResource(gold,wood,iron);
+        this.resource.addResource(gold,wood,iron,this.maxGold,this.maxWood,this.maxIron);
     }
 
     //reduce resources
-    public void subResource(double gold,double wood,double iron){
-        this.resource.changeResource(-gold,-wood,-iron);
+    public void subResource(Resource resource){
+        double gold = resource.getGold();
+        double wood = resource.getWood();
+        double iron = resource.getIron();
+        this.resource.addResource(-gold,-wood,-iron,this.maxGold,this.maxWood,this.maxIron);
     }
 
     //check if this village can build a specific building
-    public boolean addBuilding(Building building, int[] position){
+    public boolean addBuilding(Building building, int[] position,Timer timer, Worker worker){
         if(this.villageMap.addBuilding(building,position)){
             if(this.resource.compareTo(this.data.getBuildingCost(building.getName(),1))){
-                this.record.add(building.getName());
-                this.buildings.put(position, building);
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        record.add(building.getName());
+                        buildings.put(position, building);
+                        System.out.println(""+building.getName()+" construction completed");
+                        worker.work(new int[]{0,0});
+                    }
+                };
+                int timeCost = this.data.getTimeCost(building.getName(),1)*1000;
+                worker.work(position);
+                timer.schedule(task,timeCost);
+                this.subResource(this.data.getBuildingCost(building.getName(),1));
                 return true;
             }
             else{
@@ -77,8 +92,11 @@ public class Village {
                 @Override
                 public void run() {
                     population.addPopulation(name);
+                    System.out.println("One "+name+" has been trained");
                 }
             };
+            int timeCost = this.data.getTimeCost(name,0)*1000;
+            timer.schedule(task,timeCost);
             return true;
         }
         else{
@@ -86,7 +104,9 @@ public class Village {
         }
     }
 
-    public boolean upgradeBuilding(int[] position , Timer timer){
+
+
+    public boolean upgradeBuilding(int[] position , Timer timer, Worker worker){
 
         String name = this.buildings.get(position).getName();
         int level = this.buildings.get(position).getLevel();
@@ -130,23 +150,96 @@ public class Village {
                     public void run() {
                         record.upgrade(name,level);
                         buildings.get(position).upgrade();
-
-                        //todo:
+                        worker.work(new int[]{0,0});
+                        calculateProduction();
+                        //todo: calculate the defence score again
                     }
-                }
-
+                };
+                int timeCost = this.data.getTimeCost(name,level+1)*1000;
+                worker.work(position);
+                timer.schedule(task,timeCost);
                 return true;
             }
         }
         else{
             if(comparator.canUpgrade() && this.resource.compareTo(data.getBuildingCost(name,level))){
-                this.record.upgrade(name,level);
-                this.buildings.get(position).upgrade();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        record.upgrade(name,level);
+                        buildings.get(position).upgrade();
+                        worker.work(new int[]{0,0});
+                    }
+                };
+                int timeCost = this.data.getTimeCost(name,level+1)*1000;
+                worker.work(position);
+                timer.schedule(task,timeCost);
                 return true;
             }
         }
         return false;
+    }
 
+    public void removeBuilding(int[] position){
+        this.villageMap.removeBuilding(position);
+        this.buildings.remove(position);
+        this.calculateProduction();
+    }
+
+
+    public ArrayList<?> getInhabitants(String name){
+        return this.population.getDetails(name);
+    }
+
+    public void addWorkersToBuilding(int index,String name,int[] position){
+        this.population.addWorking(name,index,position);
+        this.buildings.get(position).addWorker(this.population.getInhabitant(name,index));
+        this.calculateProduction();
+    }
+
+    public void removeWorkerFromBuilding(String name, int index){
+        int[] position = this.population.getInhabitant(name,index).workPosition();
+        this.buildings.get(position).removeWorker(this.population.getInhabitant(name,index));
+    }
+
+    public void removeArmy(int index){
+        this.population.removeArmies(index);
+    }
+
+    public void addWorking(String name, int index,int[] position){
+        this.population.addWorking(name,index,position);
+    }
+
+
+    public void addArmies(int index, String name){
+        this.population.addArmies(name,index);
+    }
+
+    public void calculateProduction(){
+        double foodProduction = 0.0;
+        double woodProduction = 0.0;
+        double ironProduction = 0.0;
+        double goldProduction = 0.0;
+        for(Map.Entry<int[],Building> entry: this.buildings.entrySet()){
+            Building building = entry.getValue();
+            if(building.getName().equals("Farm")){
+                foodProduction += building.getProduction();
+            }
+            else if(building.getName().equals("GoldMine")){
+                goldProduction += building.getProduction();
+            }
+            else if(building.getName().equals("LumberHill")){
+                woodProduction += building.getProduction();
+            }
+            else if(building.getName().equals("IronMine")){
+                ironProduction += building.getProduction();
+            }
+        }
+        this.foodProduction = foodProduction;
+        this.ironProduction = ironProduction;
+        this.woodProduction = woodProduction;
+        this.goldProduction = goldProduction;
+        this.maxPopulation = 10 + (int)foodProduction/10;
     }
 
     public int getScore(){
@@ -154,6 +247,6 @@ public class Village {
     }
 
     public double[] getProduction(){
-        return new double[]{this.goldProduction, this.woodProduction, this.ironProduction};
+        return new double[]{this.goldProduction, this.woodProduction, this.ironProduction, this.foodProduction};
     }
 }
