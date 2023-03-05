@@ -4,6 +4,7 @@ import Data.Data;
 import Village.Village;
 import Village.Resource;
 
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,8 +12,10 @@ public class Game {
     //current user
     private Village user;
     private Timer timer;
-    private TimerTask timerTask;
+    private TimerTask counter;
     private int time;
+    private double[] production;
+    private Scanner scanner;
 
 
     private final Data data = new Data();
@@ -22,26 +25,34 @@ public class Game {
         user = new Village();
         timer = new Timer();
         time = 0;
-        timerTask = new TimerTask() {
+        this.production = user.getProduction();
+        this.scanner = new Scanner(System.in);
+        this.counter = new TimerTask() {
             @Override
             public void run() {
                 time++;
-                System.out.println(time);
-                user.addResource(user.getProduction()[0],user.getProduction()[1],user.getProduction()[2]);
+                user.addResource(production[0],production[1],production[2]);
             }
         };
-        this.test();
-        timer.scheduleAtFixedRate(timerTask,0,1000);
+        timer.scheduleAtFixedRate(this.counter,0,1000);
+        this.main(this.scanner);
     }
 
-    public void test(){
-        TimerTask test = new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("test after 10s");
-            }
-        };
-        this.timer.schedule(test, 5000);
+    public void main(Scanner scanner){
+        int option = -1;
+        while(option != 0){
+            System.out.println("Hi player! Please select an option: ");
+            System.out.println("1. View of my village");
+            System.out.println("2. Details of my village");
+            System.out.println("3. Details of my inhabitants");
+            System.out.println("4. Details of my buildings");
+            System.out.println("5. Train new inhabitant");
+            System.out.println("6. Add new building");
+            System.out.println("7. New to the game? Help info");
+            System.out.println("0. Exit");
+            String index = scanner.nextLine();
+        }
+
     }
 
     //randomly generate a village to attack
@@ -82,8 +93,6 @@ public class Game {
     //update user's resource(gold/wood/iron) after construct new buildings/gain loot/natural production
     public void updateResource(){}
 
-    //update user's production speed after related construction completed
-    public void updateProductionSpeed(){}
 
     //calculate current user's score
     public int retScore(){
