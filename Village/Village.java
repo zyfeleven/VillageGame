@@ -199,11 +199,24 @@ public class Village {
 
     public void removeWorkerFromBuilding(String name, int index){
         int[] position = this.population.getInhabitant(name,index).workPosition();
+        this.population.getInhabitant(name,index).work(new int[]{-1,-1});
         this.buildings.get(position).removeWorker(this.population.getInhabitant(name,index));
+
+    }
+
+    public void removeWorker(String name, int index){
+        int[] position = this.population.getInhabitant(name,index).workPosition();
+        this.population.getInhabitant(name,index).work(new int[]{-1,-1});
+        this.buildings.get(position).removeWorker(this.population.getInhabitant(name,index));
+        this.population.removePopulation(name,index);
     }
 
     public void removeArmy(int index){
         this.population.removeArmies(index);
+    }
+
+    public void removeArmy(String name, int index){
+        this.population.removeArmies(name, index);
     }
 
     public void addWorking(String name, int index,int[] position){
@@ -245,6 +258,11 @@ public class Village {
     public Building getBuilding(int[] position){
         return this.buildings.get(position);
     }
+
+    public HashMap<int[], Building> getBuildings(){
+        return this.buildings;
+    }
+
     public int getScore(){
         return this.record.getScore();
     }

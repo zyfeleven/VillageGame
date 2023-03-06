@@ -130,21 +130,27 @@ public class Population {
     public void addArmies(String name, int index){
         if(name.equals("Worker")){
             this.armies.add(this.workers.get(index));
+            this.workers.get(index).isArmy(true);
         }
         else if(name.equals("Miner")){
             this.armies.add(this.miners.get(index));
+            this.miners.get(index).isArmy(true);
         }
         else if(name.equals("Catapult")){
             this.armies.add(this.catapults.get(index));
+            this.catapults.get(index).isArmy(true);
         }
         else if(name.equals("Soldiers")){
             this.armies.add(this.soldiers.get(index));
+            this.soldiers.get(index).isArmy(true);
         }
         else if(name.equals("Knight")){
             this.armies.add(this.knights.get(index));
+            this.knights.get(index).isArmy(true);
         }
         else{
             this.armies.add(this.archers.get(index));
+            this.archers.get(index).isArmy(true);
         }
     }
 
@@ -170,6 +176,34 @@ public class Population {
     }
 
     public void removeArmies(int index){
+        this.armies.get(index).isArmy(false);
         this.armies.remove(index);
+    }
+
+    public void removeArmies(String name, int index){
+        if(name.equals("Worker")){
+            this.armies.remove(this.workers.get(index));
+            this.workers.get(index).isArmy(false);
+        }
+        else if(name.equals("Miner")){
+            this.armies.remove(this.miners.get(index));
+            this.miners.get(index).isArmy(false);
+        }
+        else if(name.equals("Catapult")){
+            this.armies.remove(this.catapults.get(index));
+            this.catapults.get(index).isArmy(false);
+        }
+        else if(name.equals("Soldiers")){
+            this.armies.remove(this.soldiers.get(index));
+            this.soldiers.get(index).isArmy(false);
+        }
+        else if(name.equals("Knight")){
+            this.armies.remove(this.knights.get(index));
+            this.knights.get(index).isArmy(false);
+        }
+        else{
+            this.armies.remove(this.archers.get(index));
+            this.archers.get(index).isArmy(false);
+        }
     }
 }

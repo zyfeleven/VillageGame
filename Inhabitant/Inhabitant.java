@@ -11,4 +11,8 @@ public interface Inhabitant {
     int[] workPosition();
 
     void work(int[] position);
+
+    boolean isArmy();
+
+    void isArmy(boolean b);
 }
