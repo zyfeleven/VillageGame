@@ -3,12 +3,18 @@ import Building.*;
 import Data.Data;
 import Data.Requirement;
 
+import java.util.Arrays;
+
 //a data structure for recording the village map using Integer array
 public class Vmap {
     private char[][] map;
 
     Vmap(){
         this.map = new char[50][50];
+        for(int i = 0;i<this.map.length;i++){
+            Arrays.fill(this.map[i],' ');
+        }
+        this.map[0][0] = 'V';
     }
 
     //add a building in the map, if there is already one building in the area then return false, else build the building and return true
@@ -44,5 +50,20 @@ public class Vmap {
         }
         this.map[position[0]][position[1]] = ' ';
         return true;
+    }
+
+    public void printMap(){
+        System.out.print(" ");
+        for(int i = 0;i<this.map.length;i++){
+            System.out.print(i+" ");
+        }
+        System.out.println();
+        for(int i = 0;i<this.map.length;i++){
+            System.out.print(i);
+            for(int j = 0;j<this.map[0].length;j++){
+                System.out.print(this.map[i][j]+" ");
+            }
+            System.out.println();
+        }
     }
 }

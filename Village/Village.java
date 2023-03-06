@@ -242,6 +242,9 @@ public class Village {
         this.maxPopulation = 10 + (int)foodProduction/10;
     }
 
+    public Building getBuilding(int[] position){
+        return this.buildings.get(position);
+    }
     public int getScore(){
         return this.record.getScore();
     }
@@ -249,4 +252,25 @@ public class Village {
     public double[] getProduction(){
         return new double[]{this.goldProduction, this.woodProduction, this.ironProduction, this.foodProduction};
     }
+
+    public void printDetails(){
+
+        System.out.println("----------");
+        System.out.println("Current population: "+this.population.getPopulationSize()+"/"+this.maxPopulation);
+        System.out.println("Number of buildings:"+this.buildings.size());
+        System.out.println("Attack score: ");
+        System.out.println("Defence score: ");
+        System.out.println("Develop score: "+this.getScore());
+        System.out.print("Current resource:");
+        this.resource.print();
+        System.out.print("Current production: ");
+        System.out.print("Gold: "+this.goldProduction+" Iron: "+this.ironProduction+" Wood: "+this.woodProduction+" Food: "+this.foodProduction);
+        System.out.println();
+    }
+
+    public void printMap(){
+        this.villageMap.printMap();
+    }
+
+
 }

@@ -41,4 +41,13 @@ public class Resource {
     public boolean compareTo(Resource resource){
         return this.gold>=resource.getGold() && this.wood>=resource.getWood() && this.iron>=resource.getWood();
     }
+
+    public void print(){
+        System.out.print("Gold: "+this.gold);
+        System.out.println();
+        System.out.print("Iron: "+this.iron);
+        System.out.println();
+        System.out.print("Wood: "+this.wood);
+        System.out.println();
+    }
 }

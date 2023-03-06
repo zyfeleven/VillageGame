@@ -1,12 +1,13 @@
 package Game;
 
+import Exception.*;
 import Data.Data;
+import Inhabitant.Worker;
 import Village.Village;
 import Village.Resource;
+import Building.*;
+import java.util.*;
 
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Game {
     //current user
@@ -21,7 +22,7 @@ public class Game {
     private final Data data = new Data();
 
     //constructor
-    Game(){
+    Game() throws InvalidOptionException {
         user = new Village();
         timer = new Timer();
         time = 0;
@@ -35,10 +36,10 @@ public class Game {
             }
         };
         timer.scheduleAtFixedRate(this.counter,0,1000);
-        this.main(this.scanner);
+        this.main();
     }
 
-    public void main(Scanner scanner){
+    public void main() throws InvalidOptionException {
         int option = -1;
         while(option != 0){
             System.out.println("Hi player! Please select an option: ");
@@ -48,9 +49,44 @@ public class Game {
             System.out.println("4. Details of my buildings");
             System.out.println("5. Train new inhabitant");
             System.out.println("6. Add new building");
-            System.out.println("7. New to the game? Help info");
+            System.out.println("7. Attacking");
+            System.out.println("8. New to the game? Help info");
             System.out.println("0. Exit");
             String index = scanner.nextLine();
+            if(index.length()!=1){
+                throw new InvalidOptionException("Invalid option!");
+            }
+            else{
+                int temp = Integer.valueOf(index);
+                if(temp == 0){
+                    break;
+                }
+                else if(temp == 1){
+                    this.viewOfVillage();
+                }
+                else if(temp == 2){
+                    System.out.println("Game time: "+this.time);
+                    this.user.printDetails();
+                }
+                else if(temp == 3){
+                    this.printInhabitants();
+                }
+                else if(temp == 4){
+
+                }
+                else if(temp == 5){
+
+                }
+                else if(temp == 6){
+
+                }
+                else if(temp == 7){
+
+                }
+                else if(temp == 8){
+
+                }
+            }
         }
 
     }
@@ -58,6 +94,86 @@ public class Game {
     //randomly generate a village to attack
     public Village generateVillage(){
         return null;
+    }
+
+    public void viewOfVillage(){
+        this.user.printMap();
+    }
+
+    public void printInhabitants() throws InvalidOptionException {
+        ArrayList<?> workers = this.user.getInhabitants("Worker");
+        ArrayList<?> miners = this.user.getInhabitants("Miner");
+        ArrayList<?> catapults = this.user.getInhabitants("Catapult");
+        ArrayList<?> soldiers = this.user.getInhabitants("Soldier");
+        ArrayList<?> archers = this.user.getInhabitants("Archer");
+        ArrayList<?> knights = this.user.getInhabitants("Knight");
+        int option = -1;
+        while(option!=0){
+            System.out.println("Please select a inhabitant type: ");
+            System.out.println("1.Worker"+" current have "+workers.size());
+            System.out.println("2.Miner"+" current have "+miners.size());
+            System.out.println("3.Archer"+" current have "+archers.size());
+            System.out.println("4.Soldier"+" current have "+soldiers.size());
+            System.out.println("5.Knight"+" current have "+knights.size());
+            System.out.println("6.Catapult"+" current have "+catapults.size());
+            System.out.println("0. Back to main menu");
+            String index = this.scanner.nextLine();
+            if(index.length()!=1){
+                throw new InvalidOptionException("Invalid option!");
+            }
+            else{
+                int temp = Integer.valueOf(index);
+                if(temp == 0){
+                    return;
+                }
+                else if(temp == 1){
+                    for(int i = 0;i<workers.size();i++){
+                        Worker worker = (Worker) workers.get(i);
+                        int[] workPosition = worker.workPosition();
+                        System.out.print("Worker"+i+"  production: "+worker.getProduction()+"  attack: "+worker.getDmg());
+                        if(workPosition[0] == 0&&workPosition[1] == 0){
+                            System.out.println();
+                            continue;
+                        }
+                        else{
+                            Building b = this.user.getBuilding(workPosition);
+                            System.out.print("working at "+b.getName()+" ["+workPosition[0]+","+workPosition[1]+"]");
+                            System.out.println();
+                        }
+                    }
+                    System.out.println("Options: ");
+                    System.out.println("1. Set work building for this inhabitant.");
+                    System.out.println("2. Add this inhabitant to the army");
+                    System.out.println("3. Call back this inhabitant from the building");
+                    System.out.println("4. Call back this inhabitant from the army");
+                    System.out.println("5. Remove this inhabitant");
+                    System.out.println("0. Back");
+                    String index1 = this.scanner.nextLine();
+
+                }
+                else if(temp == 2){
+
+                }
+                else if(temp == 3){
+
+                }
+                else if(temp == 4){
+
+                }
+                else if(temp == 5){
+
+                }
+                else if(temp == 6){
+
+                }
+                else if(temp == 7){
+
+                }
+                else if(temp == 8){
+
+                }
+            }
+        }
     }
 
     //attack a specific village, if the attack is successful then count the loot
