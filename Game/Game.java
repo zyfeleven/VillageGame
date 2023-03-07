@@ -6,6 +6,11 @@ import Inhabitant.*;
 import Village.Village;
 import Village.Resource;
 import Building.*;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -36,7 +41,6 @@ public class Game {
             }
         };
         timer.scheduleAtFixedRate(this.counter,0,1000);
-        this.main();
     }
 
     public void main() throws InvalidOptionException {
@@ -65,7 +69,8 @@ public class Game {
                     System.out.println("Invalid option!");
                 }
                 if(temp == 0){
-                    break;
+                    this.exitGame();
+                    return;
                 }
                 else if(temp == 1){
                     this.viewOfVillage();
@@ -93,7 +98,7 @@ public class Game {
                     this.attackVillage(new Village());
                 }
                 else if(temp == 8){
-
+                    this.printHints();
                 }
                 else System.out.println("invalid option!");
             }
@@ -690,10 +695,29 @@ public class Game {
         }
     }
 
+    public void printHints(){
+        try {
+            System.out.println("----------");
+            BufferedReader br = new BufferedReader(new FileReader(new File("readMe.txt")));
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+            System.out.println("----------");
+            br.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     //calculate current user's score
     public int retScore(){
         return 0;
+    }
+
+    public void exitGame(){
+        this.timer.cancel();
     }
 
 }

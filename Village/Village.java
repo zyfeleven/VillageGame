@@ -66,7 +66,7 @@ public class Village {
                         record.add(building.getName());
                         buildings.put(position, building);
                         System.out.println(""+building.getName()+" construction completed");
-                        worker.work(new int[]{0,0});
+                        worker.work(new int[]{-1,-1});
                     }
                 };
                 int timeCost = this.data.getTimeCost(building.getName(),1)*1000;
