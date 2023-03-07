@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class GoldMine implements Mine {
-
+    //descriptions of methods are in Building interface
     //constructor
     private int curWorker;
     private int maxWorker;

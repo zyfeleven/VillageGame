@@ -4,11 +4,10 @@ import Inhabitant.Inhabitant;
 
 public class VillageHall implements Building {
     private int level;
-    private int[] position;
     private int hitpoint;
     //constructor
     public VillageHall(){
-
+        this.level = 1;
     }
 
     //implement methods in interface Building

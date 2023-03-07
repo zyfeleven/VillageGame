@@ -17,13 +17,18 @@ import java.util.*;
 public class Game {
     //current user
     private Village user;
+    //timer
     private Timer timer;
+    //a task that will increase gameTime by 1 per second and add resource
     private TimerTask counter;
+    //game time
     private int time;
+    //current production order by gold, wood, iron
     private double[] production;
+    //scanner for user input
     private Scanner scanner;
 
-
+    //all constants here
     private final Data data = new Data();
 
     //constructor
@@ -40,9 +45,11 @@ public class Game {
                 user.addResource(production[0],production[1],production[2]);
             }
         };
+        //do it every second
         timer.scheduleAtFixedRate(this.counter,0,1000);
     }
 
+    //main menu
     public void main() throws InvalidOptionException {
         int option = -1;
         while(option != 0){
@@ -106,23 +113,28 @@ public class Game {
 
     }
 
-    //randomly generate a village to attack
+    //randomly generate a village to attack (update in the future)
     public Village generateVillage(){
         return null;
     }
 
+    //print the map of user's village
     public void viewOfVillage(){
         this.user.printMap();
     }
 
+    //print all inhabitant information for user
     public void printInhabitants() throws InvalidOptionException {
+        //all arraylists of inhabitants
         ArrayList<? extends Inhabitant> workers = this.user.getInhabitants("Worker");
         ArrayList<?> miners = this.user.getInhabitants("Miner");
         ArrayList<?> catapults = this.user.getInhabitants("Catapult");
         ArrayList<?> soldiers = this.user.getInhabitants("Soldier");
         ArrayList<?> archers = this.user.getInhabitants("Archer");
         ArrayList<?> knights = this.user.getInhabitants("Knight");
+        //armies will be used in the future when involving attacking and defencing
         ArrayList<?> armies = this.user.getInhabitants("Armies");
+        //all buildings of the village, used here to show which building and position the inhabitant is working in
         HashMap<int[], Building> buildings = this.user.getBuildings();
         int option = -1;
         while(option!=0){
@@ -351,8 +363,9 @@ public class Game {
         }
     }
 
+    //operations of an inhabitant
     public void InhabitantOperations(String name, int i, HashMap<int[],Building> buildings){
-
+        //all operations
         System.out.println("Options: ");
         System.out.println("1. Set work building for this inhabitant.");
         System.out.println("2. Add this inhabitant to the army");
@@ -407,6 +420,7 @@ public class Game {
         }
     }
 
+    //print all information of buildings in the village
     public void printBuildings(){
         HashMap<int[], Building> buildings = this.user.getBuildings();
         for(Map.Entry<int[],Building> entry:buildings.entrySet()){
@@ -455,6 +469,7 @@ public class Game {
         }
     }
 
+    //all operations for buildings
     public void buildingOperation(int[] position){
         Building building = this.user.getBuilding(position);
         HashSet<Inhabitant> set = building.getWorkers();
@@ -472,6 +487,7 @@ public class Game {
             System.out.println("Invalid option!");
         }
         if(index == 1){
+            //for upgrading the user must select a worker to do the job
             System.out.println("Please select a worker");
             ArrayList<? extends Inhabitant> Workers = this.user.getInhabitants("Worker");
             for(int i = 0;i<Workers.size();i++){
@@ -559,6 +575,7 @@ public class Game {
 
     }
 
+    //add a new inhabitant
     public void addInhabitant(){
         System.out.println("Choose a inhabitant type: ");
         System.out.println("1. Worker");
@@ -609,7 +626,7 @@ public class Game {
         System.out.println("Will be supported in the future...");
     }
 
-    //add new building
+    //add a new building
     public void addBuilding(){
         System.out.println("Choose a building type: ");
         System.out.println("1. Farm");
@@ -695,6 +712,7 @@ public class Game {
         }
     }
 
+    //read hints from file and print
     public void printHints(){
         try {
             System.out.println("----------");
@@ -711,11 +729,12 @@ public class Game {
     }
 
 
-    //calculate current user's score
+    //calculate current user's score (update in the future)
     public int retScore(){
         return 0;
     }
 
+    //exit the game, cancel the timer task
     public void exitGame(){
         this.timer.cancel();
     }

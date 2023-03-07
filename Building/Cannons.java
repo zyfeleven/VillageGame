@@ -2,7 +2,6 @@ package Building;
 
 import Inhabitant.Inhabitant;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Cannons implements Defence{
@@ -14,6 +13,7 @@ public class Cannons implements Defence{
     private HashSet<Inhabitant> armies;
     private double dmg;
 
+    //descriptions of methods are in Building interface
     public Cannons(){
         this.curArmies = 0;
         this.maxArmies = 5;

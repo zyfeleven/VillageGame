@@ -11,6 +11,8 @@ public class Farm implements Building{
     private int hitpoint;
     private double production;
     private HashSet<Inhabitant> workers;
+
+    //descriptions of methods are in Building interface
     //constructor
     public Farm(){
         this.curWorker = 0;

@@ -38,6 +38,8 @@ public class Resource {
         return this.iron;
     }
 
+    //compare this resource with another resource
+    //return true only when this resource is richer than the other one in all three types
     public boolean compareTo(Resource resource){
         return this.gold>=resource.getGold() && this.wood>=resource.getWood() && this.iron>=resource.getWood();
     }

@@ -2,7 +2,6 @@ package Building;
 
 import Inhabitant.Inhabitant;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class ArcherTower implements Defence{
@@ -13,6 +12,7 @@ public class ArcherTower implements Defence{
     private HashSet<Inhabitant> armies;
     private double dmg;
 
+    //descriptions of methods are in Building interface
     public ArcherTower(){
         this.curArmies = 0;
         this.maxArmies = 5;

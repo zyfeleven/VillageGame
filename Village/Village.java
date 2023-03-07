@@ -3,7 +3,6 @@ import Building.*;
 import Data.Data;
 import Data.Requirement;
 import Inhabitant.*;
-
 import java.util.*;
 
 public class Village {
@@ -83,6 +82,7 @@ public class Village {
         else return false;
     }
 
+    //add a new inhabitant
     public boolean addInhabitant(String name, Timer timer){
         if(this.population.getPopulationSize()==this.maxPopulation){
             return false;
@@ -105,14 +105,14 @@ public class Village {
     }
 
 
-
+    //upgrade a building, if the requirement is not met or the resource is not enough then return false
     public boolean upgradeBuilding(int[] position , Timer timer, Worker worker){
         if(worker.isArmy()||worker.workPosition()[0]!=-1||worker.workPosition()[1]!=-1){
             return false;
         }
         String name = this.buildings.get(position).getName();
         int level = this.buildings.get(position).getLevel();
-
+        //local class for comparing requirements
         class ReqComparator {
             public boolean canUpgrade(){
                 return false;
@@ -183,6 +183,7 @@ public class Village {
         return false;
     }
 
+    //move a building from a position to another position
     public void moveBuilding(int[] position, int[] target){
         Building b = this.buildings.get(position);
         if(this.villageMap.moveBuilding(b,position,target)){
@@ -191,6 +192,7 @@ public class Village {
         }
     }
 
+    //remove a building
     public void removeBuilding(int[] position){
         this.villageMap.removeBuilding(position);
         this.buildings.get(position).remove();
@@ -198,17 +200,19 @@ public class Village {
         this.calculateProduction();
     }
 
-
+    //get a specific type of inhabitant
     public ArrayList<? extends Inhabitant> getInhabitants(String name){
         return this.population.getDetails(name);
     }
 
+    //add an inhabitant to a specific building
     public void addWorkersToBuilding(int index,String name,int[] position){
         this.population.addWorking(name,index,position);
         this.buildings.get(position).addWorker(this.population.getInhabitant(name,index));
         this.calculateProduction();
     }
 
+    //remove a specific inhabitant from working
     public void removeWorkerFromBuilding(String name, int index){
         int[] position = this.population.getInhabitant(name,index).workPosition();
         this.population.getInhabitant(name,index).work(new int[]{-1,-1});
@@ -216,6 +220,7 @@ public class Village {
 
     }
 
+    //remove one inhabitant
     public void removeWorker(String name, int index){
         int[] position = this.population.getInhabitant(name,index).workPosition();
         this.population.getInhabitant(name,index).work(new int[]{-1,-1});
@@ -223,23 +228,27 @@ public class Village {
         this.population.removePopulation(name,index);
     }
 
+    //remove one inhabitant from the army
     public void removeArmy(int index){
         this.population.removeArmies(index);
     }
 
+    //overload: remove one specific inhabitant from the army
     public void removeArmy(String name, int index){
         this.population.removeArmies(name, index);
     }
 
+    //set an inhabitant to work in a position
     public void addWorking(String name, int index,int[] position){
         this.population.addWorking(name,index,position);
     }
 
-
+    //add an inhabitant to the army
     public void addArmies(int index, String name){
         this.population.addArmies(name,index);
     }
 
+    //calculate current production speed
     public void calculateProduction(){
         double foodProduction = 0.0;
         double woodProduction = 0.0;
@@ -267,14 +276,17 @@ public class Village {
         this.maxPopulation = 10 + (int)foodProduction/10;
     }
 
+    //get a specific building by providing the position
     public Building getBuilding(int[] position){
         return this.buildings.get(position);
     }
 
+    //return this village's buildings
     public HashMap<int[], Building> getBuildings(){
         return this.buildings;
     }
 
+    //get score
     public int getScore(){
         return this.record.getScore();
     }

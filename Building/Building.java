@@ -22,6 +22,7 @@ public interface Building {
         //default is doing nothing(VillageHall can't add worker in)
     }
 
+    //return this building's production
     default double getProduction(){
         //default is return 0 (for villageHall and defence buildings)
         return 0;
@@ -32,12 +33,16 @@ public interface Building {
         return 0;
     }
 
+    //return an integer array filled with curWorker and maxWorker
     default int[] getCurWorker(){
         return null;
     }
+
+    //return workers in this building
     default HashSet<Inhabitant> getWorkers(){
         return null;
     }
 
+    //remove this building(remove all workers from this building)
     void remove();
 }

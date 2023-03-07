@@ -7,6 +7,7 @@ public class VillageRecord {
     private int VillageHall;
     private HashMap<String, int[]> data;
 
+    //record the numbers of buildings and their level
     VillageRecord(){
         this.VillageHall = 1;
         data = new HashMap<String, int[]>(){{

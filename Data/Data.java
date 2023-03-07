@@ -46,6 +46,7 @@ public class Data {
 
     }
 
+    //get requirements of upgrading VillageHall
     public Requirement getVReq(int level){
         if(level == 1){
             return this.VReq1;
@@ -56,6 +57,7 @@ public class Data {
         else return this.VReq3;
     }
 
+    //get cost of buildings (add/upgrade)
     public Resource getBuildingCost(String name, int level){
         if(name.equals("VillageHall")){
             return this.villageHallCost[level-1];
@@ -80,6 +82,7 @@ public class Data {
         }
     }
 
+    //get cost of inhabitant
     public Resource getInhabitantCost(String name){
         if(name.equals("Worker")){
             return this.workerCost;
@@ -101,6 +104,7 @@ public class Data {
         }
     }
 
+    //get the time cost of an operation
     public int getTimeCost(String name, int level){
         if(level == 0){
             if(name.equals("Worker")){

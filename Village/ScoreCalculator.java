@@ -2,6 +2,8 @@ package Village;
 
 import java.util.HashMap;
 
+//calculate all kinds of scores here (attack, defence, develop)
+//only develop now tho
 public class ScoreCalculator {
     private final HashMap<String, Integer> dictionary = new HashMap<String, Integer>(){{
         put("VillageHall",100);

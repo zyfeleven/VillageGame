@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 //a data structure for recording village's population
 public class Population {
+    //arraylists for inhabitants
     private ArrayList<Worker> workers;
     private ArrayList<Miner> miners;
     private ArrayList<Archer> archers;
@@ -25,6 +26,7 @@ public class Population {
         this.armies = new ArrayList<>();
     }
 
+    //return a specific inhabitant searched by the name and index
     public Inhabitant getInhabitant(String name, int index){
         if(name.equals("Worker")){
             return this.workers.get(index);
@@ -49,6 +51,7 @@ public class Population {
         }
     }
 
+    //return one arraylist of a specific type of inhabitants
     public ArrayList<? extends Inhabitant> getDetails(String name){
         if(name.equals("Worker")){
             return this.workers;
@@ -85,6 +88,7 @@ public class Population {
         return sum;
     }
 
+    //add a particular type of inhabitant
     public void addPopulation(String name){
         if(name.equals("Worker")){
             this.workers.add(new Worker());
@@ -106,6 +110,7 @@ public class Population {
         }
     }
 
+    //remove one specific inhabitant
     public void removePopulation(String name, int index){
         if(name.equals("Worker")){
             this.workers.remove(index);
@@ -127,6 +132,7 @@ public class Population {
         }
     }
 
+    //add one inhabitant to the army
     public void addArmies(String name, int index){
         if(name.equals("Worker")){
             this.armies.add(this.workers.get(index));
@@ -154,6 +160,7 @@ public class Population {
         }
     }
 
+    //set one inhabitant to work at one position
     public void addWorking(String name, int index,int[] position){
         if(name.equals("Worker")){
             this.workers.get(index).work(position);
@@ -175,11 +182,13 @@ public class Population {
         }
     }
 
+    //remove one inhabitant from the army
     public void removeArmies(int index){
         this.armies.get(index).isArmy(false);
         this.armies.remove(index);
     }
 
+    //remove one specific inhabitant from the army
     public void removeArmies(String name, int index){
         if(name.equals("Worker")){
             this.armies.remove(this.workers.get(index));
