@@ -76,18 +76,21 @@ public class Game {
                 }
                 else if(temp == 3){
                     this.printInhabitants();
+                    this.production = this.user.getProduction();
                 }
                 else if(temp == 4){
                     this.printBuildings();
+                    this.production = this.user.getProduction();
                 }
                 else if(temp == 5){
-
+                    this.addInhabitant();
                 }
                 else if(temp == 6){
-
+                    this.addBuilding();
+                    this.production = this.user.getProduction();
                 }
                 else if(temp == 7){
-
+                    this.attackVillage(new Village());
                 }
                 else if(temp == 8){
 
@@ -108,7 +111,7 @@ public class Game {
     }
 
     public void printInhabitants() throws InvalidOptionException {
-        ArrayList<?> workers = this.user.getInhabitants("Worker");
+        ArrayList<? extends Inhabitant> workers = this.user.getInhabitants("Worker");
         ArrayList<?> miners = this.user.getInhabitants("Miner");
         ArrayList<?> catapults = this.user.getInhabitants("Catapult");
         ArrayList<?> soldiers = this.user.getInhabitants("Soldier");
@@ -355,7 +358,6 @@ public class Game {
         String index1 = this.scanner.nextLine();
         if(index1.length()!=1){
             System.out.println("Invalid option!");
-            return;
         }
         else{
             int temp1 = Integer.parseInt(index1);
@@ -396,47 +398,297 @@ public class Game {
                 this.user.removeWorker(name,i);
             }
             else if(temp1 == 0){
-                return;
             }
         }
     }
 
     public void printBuildings(){
+        HashMap<int[], Building> buildings = this.user.getBuildings();
+        for(Map.Entry<int[],Building> entry:buildings.entrySet()){
+            Building b = entry.getValue();
+            int[] position = entry.getKey();
+            System.out.print(b.getName()+"  position:["+position[0]+","+position[1]+"] ");
+            System.out.print("production: "+b.getProduction()+" dmg: "+b.getDmg()+" workers: "+b.getCurWorker()[0]+"/"+b.getCurWorker()[1]);
+            System.out.println();
+        }
+        System.out.println("Select an option: ");
+        System.out.println("1. Select a building");
+        System.out.println("Press any other number to back to main menu");
+        String option = this.scanner.nextLine();
+        int temp = -1;
+        try{
+            temp = Integer.parseInt(option);
+        }catch (NumberFormatException e){
+            System.out.println("Invalid option!");
+        }
+        if(temp == 1){
+            while(true){
+                System.out.println("Please input target building's position (format: 0,0)");
+                String position = this.scanner.nextLine();
+                String[] s = position.split(",");
+                int pos1 = -1;
+                int pos2 = -1;
+                try{
+                    pos1 = Integer.parseInt(s[0]);
+                    pos2 = Integer.parseInt(s[1]);
+                } catch (NumberFormatException e){
+                    System.out.println("Invalid position");
+                }
+                if(!buildings.containsKey(new int[]{pos1,pos2})){
+                    System.out.println("There is no building at this position");
+                    continue;
+                }
+                else{
+                    this.buildingOperation(new int[]{pos1,pos2});
+                    break;
+                }
+            }
+
+        }
+        else{
+            return;
+        }
+    }
+
+    public void buildingOperation(int[] position){
+        Building building = this.user.getBuilding(position);
+        HashSet<Inhabitant> set = building.getWorkers();
+        ArrayList<Inhabitant> workers = new ArrayList(set);
+        System.out.println("Options: ");
+        System.out.println("1. Upgrade");
+        System.out.println("2. Move");
+        System.out.println("3. Remove");
+        System.out.println("4. Workers detail");
+        String option = this.scanner.nextLine();
+        int index = -1;
+        try{
+            index = Integer.parseInt(option);
+        }catch (NumberFormatException e){
+            System.out.println("Invalid option!");
+        }
+        if(index == 1){
+            System.out.println("Please select a worker");
+            ArrayList<? extends Inhabitant> Workers = this.user.getInhabitants("Worker");
+            for(int i = 0;i<Workers.size();i++){
+                Inhabitant worker = Workers.get(i);
+                int[] workPosition = worker.workPosition();
+                System.out.print("Worker"+i+"  production: "+worker.getProduction()+"  attack: "+worker.getDmg());
+                if(worker.isArmy()){
+                    System.out.println(" in the army now");
+                }
+                else if(workPosition[0] == -1&&workPosition[1] == -1){
+                    System.out.println();
+                }
+                else{
+                    Building b = this.user.getBuilding(workPosition);
+                    System.out.print(" working at "+b.getName()+" ["+workPosition[0]+","+workPosition[1]+"] now");
+                    System.out.println();
+                }
+            }
+            int choice = -1;
+            String s = this.scanner.nextLine();
+            try{
+                choice = Integer.parseInt(s);
+            } catch (NumberFormatException e){
+                System.out.println("Invalid option!");
+            }
+            if(Workers.get(choice).isArmy()||Workers.get(choice).workPosition()[0]!=-1||Workers.get(choice).workPosition()[1]!=-1){
+                System.out.println("This worker is not available!");
+                return;
+            }
+            if(!this.user.upgradeBuilding(position,this.timer,(Worker) Workers.get(choice))){
+                System.out.println("Upgrade failed");
+            }
+        }
+        else if(index == 2){
+            this.viewOfVillage();
+            System.out.println("The building you selected is ["+position[0]+","+position[1]+"]");
+            System.out.println("Please choose a position to move: (format:0,0)");
+            String s = this.scanner.nextLine();
+            int[] targetPos = new int[2];
+            try {
+                String[] str = s.split(",");
+                targetPos[0] = Integer.parseInt(str[0]);
+                targetPos[1] = Integer.parseInt(str[1]);
+            } catch (NumberFormatException e){
+                System.out.println("Invalid position");
+                return;
+            }
+            this.user.moveBuilding(position,targetPos);
+        }
+        else if(index == 3){
+            this.user.removeBuilding(position);
+        }
+        else if(index == 4){
+            System.out.println("Current workers in this building: ");
+            for(int i = 0;i<workers.size();i++){
+                Inhabitant temp = workers.get(i);
+                System.out.println(i+"."+temp.getName()+" production: "+temp.getProduction()+" dmg"+ temp.getDmg());
+            }
+            System.out.println("1.I just want to have a look and then back");
+            System.out.println("2.I want to remove one worker from this building");
+            String choice = this.scanner.nextLine();
+            int i = -1;
+            try {
+                i = Integer.parseInt(choice);
+            } catch (NumberFormatException e){
+                System.out.println("Invalid option!");
+                return;
+            }
+            if(i == 1){
+                return;
+            }
+            else if(i == 2){
+                System.out.println("Please select the index of worker");
+                String w = this.scanner.nextLine();
+                int worker = -1;
+                try {
+                    worker = Integer.parseInt(w);
+                } catch (NumberFormatException e){
+                    System.out.println("Invalid Number!");
+                    return;
+                }
+                building.removeWorker(workers.get(worker));
+            }
+        }
 
     }
 
+    public void addInhabitant(){
+        System.out.println("Choose a inhabitant type: ");
+        System.out.println("1. Worker");
+        System.out.println("2. Miner");
+        System.out.println("3. Knight");
+        System.out.println("4. Archer");
+        System.out.println("5. Catapult");
+        System.out.println("6. Soldier");
+        String s = this.scanner.nextLine();
+        String name = "";
+        int i = -1;
+        try{
+            i = Integer.parseInt(s);
+        } catch (NumberFormatException e){
+            System.out.println("Invalid option!");
+        }
+        if(i == 1){
+            name = "Worker";
+        }
+        else if(i == 2){
+            name = "Miner";
+        }
+        else if(i == 3){
+            name = "Knight";
+        }
+        else if(i == 4){
+            name = "Archer";
+        }
+        else if(i == 5){
+            name = "Catapult";
+        }
+        else if(i == 6){
+            name = "Soldier";
+        }
+        else{
+            System.out.println("Invalid option!");
+            return;
+        }
+        if(this.user.addInhabitant(name, this.timer)){
+            System.out.println("The inhabitant is training now");
+        }
+        else{
+            System.out.println("There is no enough resource to train new inhabitant");
+        }
+    }
     //attack a specific village, if the attack is successful then count the loot
-    public void attackVillage(Village village){}
-
-    //add user's resource with time going on
-    public void addResource(Resource resource){}
-
-    //reduce user's resource after operation
-    public void reduceResource(Resource resource){}
-
-    //initialize the game(new game)
-    public void initialize(){}
-
-    //load user data from file
-    public void loadUser(){}
-
-    //start the game
-    public void startGame(){}
-
-    //exit the game and store user data in file
-    public void exitGame(){}
-
-    //check whether the building at target position could be upgraded
-    public boolean canUpgrade(int[] position){return true;}
-
-    //upgrade the building
-    public void upgradeBuilding(int[] position){}
+    public void attackVillage(Village village){
+        System.out.println("Will be supported in the future...");
+    }
 
     //add new building
-    public void addBuilding(String buildingName){}
-
-    //update user's resource(gold/wood/iron) after construct new buildings/gain loot/natural production
-    public void updateResource(){}
+    public void addBuilding(){
+        System.out.println("Choose a building type: ");
+        System.out.println("1. Farm");
+        System.out.println("2. GoldMine");
+        System.out.println("3. IronMine");
+        System.out.println("4. LumberHill");
+        System.out.println("5. ArcherTower");
+        System.out.println("6. Cannons");
+        String s = this.scanner.nextLine();
+        Building building;
+        int index = -1;
+        try{
+            index = Integer.parseInt(s);
+        } catch (NumberFormatException e){
+            System.out.println("Invalid option!");
+        }
+        if(index == 1){
+            building = new Farm();
+        }
+        else if(index == 2){
+            building = new GoldMine();
+        }
+        else if(index == 3){
+            building = new IronMine();
+        }
+        else if(index == 4){
+            building = new LumberHill();
+        }
+        else if(index == 5){
+            building = new ArcherTower();
+        }
+        else if(index == 6){
+            building = new Cannons();
+        }
+        else{
+            System.out.println("Invalid option!");
+            return;
+        }
+        System.out.println("Please select a worker");
+        ArrayList<? extends Inhabitant> Workers = this.user.getInhabitants("Worker");
+        for(int i = 0;i<Workers.size();i++){
+            Inhabitant worker = Workers.get(i);
+            int[] workPosition = worker.workPosition();
+            System.out.print("Worker"+i+"  production: "+worker.getProduction()+"  attack: "+worker.getDmg());
+            if(worker.isArmy()){
+                System.out.println(" in the army now");
+            }
+            else if(workPosition[0] == -1&&workPosition[1] == -1){
+                System.out.println();
+            }
+            else{
+                Building b = this.user.getBuilding(workPosition);
+                System.out.print(" working at "+b.getName()+" ["+workPosition[0]+","+workPosition[1]+"] now");
+                System.out.println();
+            }
+        }
+        int choice = -1;
+        String str = this.scanner.nextLine();
+        try{
+            choice = Integer.parseInt(str);
+        } catch (NumberFormatException e){
+            System.out.println("Invalid option!");
+        }
+        if(Workers.get(choice).isArmy()||Workers.get(choice).workPosition()[0]!=-1||Workers.get(choice).workPosition()[1]!=-1){
+            System.out.println("This worker is not available!");
+            return;
+        }
+        System.out.println("Please choose a position: (format 0,0)");
+        int[] position = new int[2];
+        String s1 = this.scanner.nextLine();
+        try {
+            String[] strings = s1.split(",");
+            position[0] = Integer.parseInt(strings[0]);
+            position[1] = Integer.parseInt(strings[1]);
+        } catch (NumberFormatException e){
+            System.out.println("Invalid position");
+        }
+        if(this.user.addBuilding(building,position,this.timer,(Worker)Workers.get(choice))){
+            System.out.println("The building is under construction now");
+        }
+        else{
+            System.out.println("There is no enough resource to add new building or the requirement is not met");
+        }
+    }
 
 
     //calculate current user's score

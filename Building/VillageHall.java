@@ -24,4 +24,8 @@ public class VillageHall implements Building {
         return "Village";
     }
 
+    public void remove(){
+        System.out.println("You can't remove VillageHall");
+    }
+
 }

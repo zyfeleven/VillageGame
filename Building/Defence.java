@@ -12,5 +12,5 @@ public interface Defence extends Building{
 
     double getDmg();
 
-    HashSet<?> getWorkers();
+    HashSet<Inhabitant> getWorkers();
 }

@@ -44,10 +44,6 @@ public class Farm implements Building{
         this.production -= worker.getProduction();
     }
 
-    public int getCurWorker(){
-        return this.curWorker;
-    }
-
     public double getProduction(){
         return this.production;
     }
@@ -56,5 +52,15 @@ public class Farm implements Building{
     }
     public HashSet<Inhabitant> getWorkers(){
         return this.workers;
+    }
+
+    public int[] getCurWorker(){
+        return new int[]{this.curWorker,this.maxWorker};
+    }
+
+    public void remove(){
+        for(Inhabitant i: workers){
+            i.work(new int[]{-1,-1});
+        }
     }
 }

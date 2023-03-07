@@ -45,13 +45,19 @@ public class IronMine implements Mine {
         worker.work(new int[]{0,0});
         this.production -= worker.getProduction();
     }
-    public int getCurWorker(){
-        return this.curWorker;
+    public int[] getCurWorker(){
+        return new int[]{this.curWorker,this.maxWorker};
     }
     public String getName(){
         return "IronMine";
     }
     public HashSet<Inhabitant> getWorkers(){
         return this.miners;
+    }
+
+    public void remove(){
+        for(Inhabitant i: miners){
+            i.work(new int[]{-1,-1});
+        }
     }
 }

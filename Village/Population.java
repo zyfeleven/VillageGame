@@ -49,7 +49,7 @@ public class Population {
         }
     }
 
-    public ArrayList<?> getDetails(String name){
+    public ArrayList<? extends Inhabitant> getDetails(String name){
         if(name.equals("Worker")){
             return this.workers;
         }

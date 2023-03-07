@@ -2,6 +2,8 @@ package Building;
 
 import Inhabitant.Inhabitant;
 
+import java.util.HashSet;
+
 public interface Building {
     void upgrade();
     //upgrade the building
@@ -29,4 +31,13 @@ public interface Building {
         //default is return 0 for non-defence buildings
         return 0;
     }
+
+    default int[] getCurWorker(){
+        return null;
+    }
+    default HashSet<Inhabitant> getWorkers(){
+        return null;
+    }
+
+    void remove();
 }

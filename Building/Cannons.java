@@ -56,4 +56,14 @@ public class Cannons implements Defence{
     public HashSet<Inhabitant> getWorkers(){
         return this.armies;
     }
+
+    public int[] getCurWorker(){
+        return new int[]{this.curArmies,this.maxArmies};
+    }
+
+    public void remove(){
+        for(Inhabitant i: armies){
+            i.work(new int[]{-1,-1});
+        }
+    }
 }

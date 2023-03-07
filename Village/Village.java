@@ -107,7 +107,9 @@ public class Village {
 
 
     public boolean upgradeBuilding(int[] position , Timer timer, Worker worker){
-
+        if(worker.isArmy()||worker.workPosition()[0]!=-1||worker.workPosition()[1]!=-1){
+            return false;
+        }
         String name = this.buildings.get(position).getName();
         int level = this.buildings.get(position).getLevel();
 
@@ -129,6 +131,7 @@ public class Village {
                 for(String name: buildings){
                     for(int i = 2;i>0;i--){
                         if(record.getRecord(name)[i]<req.getRecord(name)[i]){
+                            System.out.println("Requirement is not met");
                             return false;
                         }
                         else if(record.getRecord(name)[i]>req.getRecord(name)[i]){
@@ -150,7 +153,7 @@ public class Village {
                     public void run() {
                         record.upgrade(name,level);
                         buildings.get(position).upgrade();
-                        worker.work(new int[]{0,0});
+                        worker.work(new int[]{-1,-1});
                         calculateProduction();
                         //todo: calculate the defence score again
                     }
@@ -168,7 +171,7 @@ public class Village {
                     public void run() {
                         record.upgrade(name,level);
                         buildings.get(position).upgrade();
-                        worker.work(new int[]{0,0});
+                        worker.work(new int[]{-1,-1});
                     }
                 };
                 int timeCost = this.data.getTimeCost(name,level+1)*1000;
@@ -180,14 +183,23 @@ public class Village {
         return false;
     }
 
+    public void moveBuilding(int[] position, int[] target){
+        Building b = this.buildings.get(position);
+        if(this.villageMap.moveBuilding(b,position,target)){
+            this.buildings.remove(position);
+            this.buildings.put(target,b);
+        }
+    }
+
     public void removeBuilding(int[] position){
         this.villageMap.removeBuilding(position);
+        this.buildings.get(position).remove();
         this.buildings.remove(position);
         this.calculateProduction();
     }
 
 
-    public ArrayList<?> getInhabitants(String name){
+    public ArrayList<? extends Inhabitant> getInhabitants(String name){
         return this.population.getDetails(name);
     }
 
